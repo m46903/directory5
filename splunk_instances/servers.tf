@@ -1,9 +1,10 @@
 # Define webserver inside the public subnet
 resource "aws_instance" "indexer" {
-  count                       = 3
-  ami                         = var.ami
-  instance_type               = var.indexer
-  key_name                    = "sterling"
+  count         = 3
+  ami           = var.ami
+  instance_type = var.indexer
+  #key_name                    = "content-cyber-range-aws-key"
+  key_name                    = var.key
   subnet_id                   = aws_subnet.public-subnet.id
   vpc_security_group_ids      = ["${aws_security_group.public_sg.id}"]
   associate_public_ip_address = true
@@ -12,15 +13,14 @@ resource "aws_instance" "indexer" {
 
 
   tags = {
-    Name = "Indexer-${count.index + 1}"
+    Name = "Indexer-${count.index + 101}"
   }
 }
 
 resource "aws_instance" "search_head" {
-  ami           = var.ami
-  instance_type = var.search_head
-  #key_name = aws_key_pair.default.id
-  key_name                    = "sterling"
+  ami                         = var.ami
+  instance_type               = var.search_head
+  key_name                    = var.key
   subnet_id                   = aws_subnet.public-subnet.id
   vpc_security_group_ids      = ["${aws_security_group.public_sg.id}"]
   associate_public_ip_address = true
@@ -33,10 +33,9 @@ resource "aws_instance" "search_head" {
 }
 
 resource "aws_instance" "cluster_master" {
-  ami           = var.ami
-  instance_type = var.cluster_master
-  #key_name = aws_key_pair.default.id
-  key_name                    = "sterling"
+  ami                         = var.ami
+  instance_type               = var.cluster_master
+  key_name                    = var.key
   subnet_id                   = aws_subnet.public-subnet.id
   vpc_security_group_ids      = ["${aws_security_group.public_sg.id}"]
   associate_public_ip_address = true
